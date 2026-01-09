@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Password Generator</title>
+    <style>
+        body { font-family: Arial; background: #0d1117; color: #58a6ff; text-align: center; }
+        input, button { padding: 10px; margin: 8px; width: 260px; }
+        button { cursor: pointer; background: #238636; color: white; border: none; }
+        pre { background: #161b22; padding: 15px; word-wrap: break-word; }
+    </style>
+</head>
+<body>
+
+<h2>🔑 Secure Password Generator</h2>
+
+<input id="length" type="number" value="20" min="4" max="128">
+<br>
+<button onclick="generate()">Generate Password</button>
+
+<pre id="output"></pre>
+
+<script>
+async function generate() {
+    const length = document.getElementById("length").value;
+
+    const response = await fetch("/generate", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ length })
+    });
+
+    const data = await response.json();
+    document.getElementById("output").textContent =
+        data.error ? data.error : data.password;
+}
+</script>
+
+</body>
+</html>
